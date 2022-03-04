@@ -1,6 +1,6 @@
 # promscale-bench
 
-A CLI tool to benchmark PromQL queries to Promscale.
+A CLI tool to benchmark PromQL queries against Promscale.
 
 ## Installation
 
