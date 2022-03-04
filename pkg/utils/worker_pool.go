@@ -55,7 +55,7 @@ func (p *workerPool) CloseTaskC() {
 }
 
 // Wait waits until all the worker goroutines have exited.
-// It is the responsibility of the caller of `Exec` to also
+// It is the responsibility of the caller of `Start` to also
 // call `Wait`. This would otherwise lead to *leaking goroutines*.
 func (p *workerPool) Wait() {
 	p.waitGroup.Wait()
