@@ -2,10 +2,12 @@ package main
 
 import (
 	"flag"
+	"fmt"
 
 	"log"
 
 	"github.com/mayankshah1607/promscale-bench/pkg/cli"
+	prom "github.com/mayankshah1607/promscale-bench/pkg/prometheus"
 )
 
 type opts struct {
@@ -18,13 +20,38 @@ type opts struct {
 var cliOpts = &opts{}
 
 func main() {
-	err := cli.RunBenchmark(cliOpts.n,
-		cliOpts.csvDir,
-		cliOpts.promURL,
-		cliOpts.stats)
-	if err != nil {
+
+	// validate CLI args
+	if err := validateArgs(cliOpts); err != nil {
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	// Test the connection to Prometheus
+	if err := prom.ConnectionTest(cliOpts.promURL); err != nil {
 		log.Fatal(err)
 	}
+
+	// Run the benchmarks
+	if err := cli.RunBenchmark(cliOpts.n,
+		cliOpts.csvDir,
+		cliOpts.promURL,
+		cliOpts.stats); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func validateArgs(opts *opts) error {
+	if opts.csvDir == "" {
+		return fmt.Errorf("`-dir` cannot be empty. Please specify a CSV file")
+	}
+
+	if opts.promURL == "" {
+		return fmt.Errorf("`prom-url` cannot be empty." +
+			"Please specify the URL to your Prometheus instance")
+	}
+	return nil
 }
 
 func init() {

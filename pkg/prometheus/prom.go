@@ -90,3 +90,16 @@ func ExecRequestWithClient(req *http.Request,
 		ExecTime: execTime,
 	}
 }
+
+func ConnectionTest(promURL string) error {
+	resp, err := http.Get(fmt.Sprintf("%s/healthz", promURL))
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("could not verify the health of Prometheus."+
+			"Please check if your instance at '%s' running correctly and try again", promURL)
+	}
+	return nil
+}

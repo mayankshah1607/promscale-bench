@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"math"
 	"net/http"
 	"sort"
 	"strings"
@@ -79,7 +78,8 @@ func RunBenchmark(workerN int, csvDir, promURL, stats string) error {
 	return nil
 }
 
-func processAndPrintBenchmarkData(nQueries int, totalTime time.Duration, stats []string,
+func processAndPrintBenchmarkData(nQueries int,
+	totalTime time.Duration, stats []string,
 	results <-chan prom.PromQLResponse) {
 
 	// load all results from the channel into a buffer slice
@@ -96,47 +96,9 @@ func processAndPrintBenchmarkData(nQueries int, totalTime time.Duration, stats [
 	})
 
 	fmt.Printf("\nProcessed %d queries in %s\n\n", nQueries, totalTime)
-	for _, stat := range stats {
-		switch stat {
-		case Min:
-			fmt.Printf("Min Query time:\t\t%s\n", sortedResults[0].ExecTime)
 
-		case Max:
-			fmt.Printf("Max Query time:\t\t%s\n", sortedResults[nQueries-1].ExecTime)
-
-		case Median:
-			medianQueryTime := []time.Duration{
-				sortedResults[nQueries/2].ExecTime}
-			if nQueries%2 != 0 {
-				medianQueryTime = append(medianQueryTime,
-					sortedResults[(nQueries/2)+1].ExecTime)
-			}
-			fmt.Printf("Median Query time:\t%v\n", medianQueryTime)
-
-		case P90:
-			p90Index := int(math.Ceil(0.9*float64(nQueries))) - 1
-			fmt.Printf("90th Percentile:\t%s\n", sortedResults[p90Index].ExecTime)
-
-		case P99:
-			p99Index := int(math.Ceil(0.99*float64(nQueries))) - 1
-			fmt.Printf("99th Percentile:\t%s\n", sortedResults[p99Index].ExecTime)
-
-		case ErrCount:
-			errCount := 0
-			for _, r := range sortedResults {
-				if r.Response.StatusCode != 200 || r.Err != nil {
-					errCount += 1
-				}
-			}
-			fmt.Printf("Total Errors:\t\t%d\n", errCount)
-
-		case Avg:
-			sum := 0.0
-			for _, t := range sortedResults {
-				sum = sum + float64(t.ExecTime)
-			}
-			avg := sum / float64(nQueries)
-			fmt.Printf("Avg Query Time:\t\t%s\n", time.Duration(avg))
-		}
+	computeFuncs := getStatComputeFuncs(stats)
+	for _, computeFunc := range computeFuncs {
+		computeFunc(sortedResults)
 	}
 }
