@@ -23,9 +23,7 @@ func main() {
 
 	// validate CLI args
 	if err := validateArgs(cliOpts); err != nil {
-		if err != nil {
-			log.Fatal(err)
-		}
+		log.Fatal(err)
 	}
 
 	// Test the connection to Prometheus
