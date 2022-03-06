@@ -41,6 +41,11 @@ ingest:
 	--data-binary "@real-dataset.sz" \
 	"$(PROM_URL)/write";
 
+	@echo "Updating retention period to 100 years...";
+	docker exec --user postgres -it timescaledb \
+		psql -c \
+		"SELECT prom_api.set_metric_retention_period('demo_cpu_usage_seconds_total', INTERVAL '100 years')";
+
 .PHONY: build
 build:
 	go build -o $(BIN_DIR)/promscale-bench cli/main.go
