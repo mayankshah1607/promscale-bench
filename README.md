@@ -49,14 +49,14 @@ $ make run-sample-benchmark
 This step ingests the sample data into Promscale, builds the CLI binary and runs it against the installation of Promscale. This would give you an output similar to:
 
 ```
-Processed 11 queries in 18.12916ms
+Processed 11 queries in 31.883343ms
 
-Min Query time:         2.276594ms
-Max Query time:         8.227293ms
-Median Query time:      [3.14251ms 4.246467ms]
-Avg Query Time:         4.699032ms
-90th Percentile:        8.169152ms
-99th Percentile:        8.227293ms
+Min Query time:         6.206807ms
+Max Query time:         11.340485ms
+Median Query time:      [7.631863ms]
+Avg Query Time:         8.328757ms
+90th Percentile:        11.273614ms
+90th Percentile:        11.340485ms
 Total Errors:           0
 ```
 

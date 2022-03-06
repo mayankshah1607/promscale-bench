@@ -35,7 +35,7 @@ func RunBenchmark(workerN int, csvDir, promURL, stats string) error {
 		queueSize = len(queries)
 
 		// Spawn new worker pool with `workerN` routines
-		// and a queue size of `queue size`
+		// and a queue size of `queueSize`
 		wp = utils.NewWorkerPool(workerN, queueSize)
 
 		// workers will push results to this channel
@@ -74,7 +74,8 @@ func RunBenchmark(workerN int, csvDir, promURL, stats string) error {
 	// all workers (producers) have exited after `wp.Wait()`.
 	close(resultC)
 
-	processAndPrintBenchmarkData(queueSize, elapsed, strings.Split(stats, ","), resultC)
+	processAndPrintBenchmarkData(queueSize, elapsed,
+		strings.Split(stats, ","), resultC)
 	return nil
 }
 
