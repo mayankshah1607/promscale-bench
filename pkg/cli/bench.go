@@ -31,7 +31,7 @@ func RunBenchmark(workerN int, csvDir, promURL, stats string) error {
 	}
 
 	var (
-		// Total number of queries / work processed
+		// Total number of queries or work processed
 		queueSize = len(queries)
 
 		// Spawn new worker pool with `workerN` routines

@@ -94,7 +94,7 @@ func ExecRequestWithClient(req *http.Request,
 func ConnectionTest(promURL string) error {
 	resp, err := http.Get(fmt.Sprintf("%s/healthz", promURL))
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to connect to Prometheus at given URL: %v", err)
 	}
 
 	if resp.StatusCode != 200 {
