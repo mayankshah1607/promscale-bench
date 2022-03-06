@@ -24,10 +24,10 @@ $ ./bin/promscale-bench -n 3 \
 
 | Name        | Description                                           | Default                        |
 |-------------|-------------------------------------------------------|--------------------------------|
-| `-n`        | Number of concurrent workers                          | 3                              |
-| `-dir`      | Path the the CSV file containing queries to benchmark | ""                             |
-| `-prom-url` | URL of the running Promscale / Prometheus instance    | "localhost:9201"               |
-| `-stats`    | Comma separated list of stats to measure              | "min,max,med,avg,p90,p99,errs" |
+| `--n`        | Number of concurrent workers                          | 3                              |
+| `--dir`      | Path the the CSV file containing queries to benchmark | ""                             |
+| `--prom-url` | URL of the running Promscale / Prometheus instance    | "http://localhost:9201"               |
+| `--stats`    | Comma separated list of stats to measure              | "min,max,med,avg,p90,p99,errs" |
 
 ### Run a sample benchmark
 
