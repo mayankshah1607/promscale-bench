@@ -37,8 +37,7 @@ ingest:
 	-H "Content-Type: application/x-protobuf" \
 	-H "Content-Encoding: snappy" \
 	-H "X-Prometheus-Remote-Write-Version: 0.1.0" \
-	--request POST \
-	--data-binary "@real-dataset.sz" \
+	--data-binary "@data/real-dataset.sz" \
 	"$(PROM_URL)/write";
 
 	@echo "Updating retention period to 100 years...";
@@ -51,7 +50,5 @@ build:
 	go build -o $(BIN_DIR)/promscale-bench cli/main.go
 
 .PHONY: run-sample-benchmark
-run-sample-banchmark:
-	$(MAKE) ingest;
-	$(MAKE) build;
+run-sample-benchmark: ingest build
 	./bin/promscale-bench -dir $(SAMPLE_CSV_DIR)
